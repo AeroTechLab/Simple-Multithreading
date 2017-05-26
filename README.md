@@ -16,4 +16,4 @@ Also, the thread safe maps library uses a built-in copy of [Klib](https://github
 
 ### Documentation
 
-Descriptions of how the functions and data structures work are available at the [Doxygen](http://www.stack.nl/~dimitri/doxygen/index.html)-generated [documentation pages](https://labdin.github.io/Simple-Multithreading/)
+Descriptions of how the functions and data structures work are available at the [Doxygen](http://www.stack.nl/~dimitri/doxygen/index.html)-generated [documentation pages](https://labdin.github.io/Simple-Multithreading/files.html)
