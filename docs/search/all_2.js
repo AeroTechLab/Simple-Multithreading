@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['simple_2dmultithreading',['Simple-Multithreading',['../index.html',1,'']]],
+  ['simple_20multithreading',['Simple Multithreading',['../index.html',1,'']]],
   ['sem_5fcreate',['Sem_Create',['../semaphores_8h.html#a461a809ed2b28046b52d32b1b5975804',1,'semaphores.h']]],
   ['sem_5fdecrement',['Sem_Decrement',['../semaphores_8h.html#ae540a813d1691960fbde29bb427fb421',1,'semaphores.h']]],
   ['sem_5fdiscard',['Sem_Discard',['../semaphores_8h.html#ac3fcd9e59925d7a606501797172c96bd',1,'semaphores.h']]],

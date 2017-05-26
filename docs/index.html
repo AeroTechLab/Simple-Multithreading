@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Simple Multithreading: Simple-Multithreading</title>
+<title>Simple Multithreading: Simple Multithreading</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,10 +59,21 @@ $(function() {
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Simple-Multithreading </div>  </div>
+<div class="title">Simple Multithreading </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Multiplatform abstractions for thread management in C </p>
+<div class="textblock"><p>Utilities and abstractions for creating multiplatform multithreaded applications in C</p>
+<p>It offers:</p>
+<ul>
+<li>Individual <a href="https://en.wikipedia.org/wiki/Thread_(computing)">threads</a> management (start,stop)</li>
+<li>Thread synchornization: <a href="https://en.wikipedia.org/wiki/Mutual_exclusion">locks/mutexes</a> and <a href="https://en.wikipedia.org/wiki/Semaphore_(programming)">semaphores</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Thread_safety">Thread-safe</a> data structures: <a href="https://en.wikipedia.org/wiki/List_(abstract_data_type)">lists</a>, <a href="https://en.wikipedia.org/wiki/Queue_(abstract_data_type)">queues</a> and <a href="https://en.wikipedia.org/wiki/Hash_table">maps/dictionaries/hash tables</a></li>
+</ul>
+<h3>Build dependencies</h3>
+<p>The only required dependencies are <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms682516(v=vs.85).aspx">Win32 threads</a> when building on Windows and <a href="https://en.wikipedia.org/wiki/POSIX_Threads">Pthreads</a> when building on <a href="https://en.wikipedia.org/wiki/POSIX">POSIX</a> systems</p>
+<p>Also, the thread safe maps library uses a built-in copy of <a href="https://github.com/attractivechaos/klib">Klib</a>'s hash library</p>
+<h3>Documentation</h3>
+<p>Descriptions of how the functions and data structures work are available at the <a href="http://www.stack.nl/~dimitri/doxygen/index.html">Doxygen</a>-generated <a href="https://labdin.github.io/Simple-Multithreading/">documentation pages</a> </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

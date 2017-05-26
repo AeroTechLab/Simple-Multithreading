@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['simple_2dmultithreading',['Simple-Multithreading',['../index.html',1,'']]]
+  ['simple_20multithreading',['Simple Multithreading',['../index.html',1,'']]]
 ];
