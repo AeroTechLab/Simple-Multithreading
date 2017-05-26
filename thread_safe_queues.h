@@ -30,7 +30,7 @@
 
 #include <stdint.h> 
 #include <stdbool.h> 
-
+#include <stddef.h>
 
 /// Structure holding single thread safe queue data
 typedef struct _TSQueueData TSQueueData;
@@ -38,7 +38,7 @@ typedef struct _TSQueueData TSQueueData;
 typedef TSQueueData* TSQueue;
 
 /// Option to control behaviour of queue access on empty or full cases
-enum TSQAccessMode 
+enum TSQueueAccessMode 
 { 
   TSQUEUE_WAIT,               ///< Wait for availability of data for reading or space for writing 
   TSQUEUE_NOWAIT              ///< Automatically return when reading empty queue or overwrite when writing to full queue
@@ -65,14 +65,14 @@ size_t TSQ_GetItemsCount( TSQueue queue );
 /// @param[in] buffer opaque pointer to inserted variable
 /// @param[in] mode insertion behaviour (TSQUEUE_WAIT or TSQUEUE_NOWAIT)
 /// @return true on successful copy/insertion, false otherwise 
-bool TSQ_Enqueue( TSQueue queue, void* buffer, enum TSQAccessMode mode );
+bool TSQ_Enqueue( TSQueue queue, void* buffer, enum TSQueueAccessMode mode );
 
 /// @brief Copies first item of the thread safe queue to given buffer and removes it from queue
 /// @param[in] queue reference to queue
 /// @param[out] buffer opaque pointer to preallocated buffer for variable
 /// @param[in] mode removal behaviour (TSQUEUE_WAIT or TSQUEUE_NOWAIT)
 /// @return true on successful copy/removal, false otherwise 
-bool TSQ_Dequeue( TSQueue queue, void* buffer, enum TSQAccessMode mode );
+bool TSQ_Dequeue( TSQueue queue, void* buffer, enum TSQueueAccessMode mode );
 
 
 #endif // THREAD_SAFE_QUEUES_H

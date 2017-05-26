@@ -19,29 +19,29 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "semaphores.h"
+#include "thread_locks.h"
 
 #ifdef WIN32
 
 #include <Windows.h>
 
 // Request new unique mutex for using in thread syncronization
-ThreadLock ThreadLocks_Create()
+TLock TLock_Create()
 {
   CRITICAL_SECTION* lock = malloc( sizeof(CRITICAL_SECTION) );
   InitializeCriticalSection( lock );
-  return (ThreadLock) lock;
+  return (TLock) lock;
 }
 
-void ThreadLocks_Discard( ThreadLock lock )
+void TLock_Discard( TLock lock )
 {
   DeleteCriticalSection( (CRITICAL_SECTION*) lock );
   free( lock );
 }
 
 // Mutex aquisition and release
-void ThreadLocks_Acquire( ThreadLock lock ) { EnterCriticalSection( (CRITICAL_SECTION*) lock ); }
-void ThreadLocks_Release( ThreadLock lock ) { LeaveCriticalSection( (CRITICAL_SECTION*) lock ); }
+void TLock_Acquire( TLock lock ) { EnterCriticalSection( (CRITICAL_SECTION*) lock ); }
+void TLock_Release( TLock lock ) { LeaveCriticalSection( (CRITICAL_SECTION*) lock ); }
 
 #else // Unix
 
@@ -53,21 +53,21 @@ void ThreadLocks_Release( ThreadLock lock ) { LeaveCriticalSection( (CRITICAL_SE
 #include <malloc.h>
 
 // Request new unique mutex for using in thread syncronization
-ThreadLock ThreadLocks_Create()
+TLock TLock_Create()
 {
   pthread_mutex_t* newLock = (pthread_mutex_t*) malloc( sizeof(pthread_mutex_t) );
   pthread_mutex_init( newLock, NULL );
-  return (ThreadLock) newLock;
+  return (TLock) newLock;
 }
 
-void ThreadLocks_Discard( ThreadLock lock )
+void TLock_Discard( TLock lock )
 {
   pthread_mutex_destroy( (pthread_mutex_t*) lock );
   free( lock );
 }
 
 // Mutex aquisition and release
-void ThreadLocks_Acquire( ThreadLock lock ) { pthread_mutex_lock( (pthread_mutex_t*) lock ); }
-void ThreadLocks_Release( ThreadLock lock ) { pthread_mutex_unlock( (pthread_mutex_t*) lock ); }
+void TLock_Acquire( TLock lock ) { pthread_mutex_lock( (pthread_mutex_t*) lock ); }
+void TLock_Release( TLock lock ) { pthread_mutex_unlock( (pthread_mutex_t*) lock ); }
 
 #endif // WIN32

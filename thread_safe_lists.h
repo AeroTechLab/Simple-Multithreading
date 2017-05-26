@@ -30,6 +30,7 @@
 
 #include <stdint.h> 
 #include <stdbool.h> 
+#include <stddef.h>
 
 /// Structure holding single thread safe list data
 typedef struct _TSListData TSListData;

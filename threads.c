@@ -33,11 +33,9 @@ Thread Thread_Start( AsyncFunction function, void* args, enum ThreadResourceMode
   
   if( (handle = CreateThread( NULL, 0, (LPTHREAD_START_ROUTINE) function, args, 0, &threadID )) == THREAD_INVALID_HANDLE )
   {
-    ERROR_PRINT( "CreateThread: failed creating new thread with function %p", function );
+    perror( "Thread_Start: CreateThread: " );
     return THREAD_INVALID_HANDLE;
   }
-  
-  DEBUG_PRINT( "created thread %x successfully", handle );
   
   if( mode == THREAD_DETACHED ) CloseHandle( handle );
 
@@ -52,24 +50,15 @@ uint32_t Thread_WaitExit( Thread handle, unsigned int milliseconds )
 
   if( (HANDLE) handle != THREAD_INVALID_HANDLE )
   {
-    DEBUG_PRINT( "waiting thread %x", (HANDLE) handle );
-
     exitStatus = WaitForSingleObject( handle, (DWORD) milliseconds );
   
-    if( exitStatus == WAIT_FAILED )
-      ERROR_PRINT( "WaitForSingleObject: error waiting for thread %x end: code: %x", handle, GetLastError() );
-    else if( exitStatus == WAIT_TIMEOUT )
-      ERROR_PRINT( "WaitForSingleObject: wait for thread %x timed out", handle );
-    else
-    {
-      DEBUG_PRINT( "thread %x returned", handle );
+    if( exitStatus == WAIT_FAILED || exitStatus == WAIT_TIMEOUT )
+      perror( "Thread_WaitExit: WaitForSingleObject: " );
     
-      if( GetExitCodeThread( handle, &exitCode ) != 0 )
-        DEBUG_PRINT( "thread exit code: %u", exitCode ); 
-    }
+    GetExitCodeThread( handle, &exitCode );
   
     if( CloseHandle( (HANDLE) handle ) == 0 )
-      ERROR_PRINT( "CloseHandle: error trying to close thread handle %x: code: %x", (HANDLE) handle, GetLastError() );
+      perror( "Thread_WaitExit: CloseHandle: " );
   }
 
   return exitCode;
@@ -104,11 +93,9 @@ Thread Thread_Start( void* (*function)( void* ), void* args, enum ThreadResource
   
   if( pthread_create( handle, NULL, function, args ) != 0 )
   {
-    ERROR_PRINT( "pthread_create: failed creating new thread with function %p", function );
+    perror( "Thread_Start: pthread_create: " );
     return THREAD_INVALID_HANDLE;
   }
-  
-  DEBUG_PRINT( "created thread %p successfully", handle );
   
   if( mode == THREAD_DETACHED ) pthread_detach( *handle );
 
@@ -157,8 +144,6 @@ uint32_t Thread_WaitExit( Thread handle, unsigned int milliseconds )
       return 0;
     }
   
-    DEBUG_PRINT( "waiting thread %p exit", handle );
-  
     do controlResult = pthread_cond_timedwait( &(controlArgs.condition), &(controlArgs.lock), &timeout );
     while( controlArgs.result != NULL && controlResult != ETIMEDOUT );
 
@@ -168,16 +153,7 @@ uint32_t Thread_WaitExit( Thread handle, unsigned int milliseconds )
     pthread_cond_destroy( &(controlArgs.condition) );
     pthread_mutex_destroy( &(controlArgs.lock) );
   
-    DEBUG_PRINT( "waiter for thread %p exited", handle );
-  
-    if( controlArgs.result != NULL )
-    {
-      DEBUG_PRINT( "thread %p exit code: %u", handle, *((uint32_t*) (controlArgs.result)) );
-    
-      return *((uint32_t*) (controlArgs.result));
-    }
-    else 
-      DEBUG_PRINT( "waiting for thread %p timed out", handle );
+    if( controlArgs.result != NULL ) return *((uint32_t*) (controlArgs.result));
     
     free( handle );
   }

@@ -33,7 +33,7 @@
 
 
 /// Type of key used by created map
-enum TSMKeyType 
+enum TSMapKeyType 
 { 
   TSMAP_INT,              ///< Use integer keys
   TSMAP_STR               ///< Use string keys
@@ -49,7 +49,7 @@ typedef TSMapData* TSMap;
 /// @param[in] keyType type of indexation key used (TSMAP_INT or TSMAP_STR)                                
 /// @param[in] itemSize size (in bytes) of created map items                                             
 /// @return reference to newly created map data structure  
-TSMap TSM_Create( enum TSMKeyType keyType, size_t itemSize );
+TSMap TSM_Create( enum TSMapKeyType keyType, size_t itemSize );
 
 /// @brief Deallocates given thread safe queue map structure                        
 /// @param[in] map reference to map

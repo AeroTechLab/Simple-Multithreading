@@ -31,7 +31,7 @@ struct _SemaphoreData
   size_t count, maxCount;
 };
 
-inline Semaphore Semaphores_Create( size_t startCount, size_t maxCount )
+Semaphore Sem_Create( size_t startCount, size_t maxCount )
 {
   Semaphore sem = (Semaphore) malloc( sizeof(SemaphoreData) );
   sem->counter = CreateSemaphore( NULL, startCount, maxCount, NULL );
@@ -41,32 +41,32 @@ inline Semaphore Semaphores_Create( size_t startCount, size_t maxCount )
   return sem;
 }
 
-void Semaphores_Discard( Semaphore sem )
+void Sem_Discard( Semaphore sem )
 {
   CloseHandle( sem->counter );
   free( sem );
 }
 
-void Semaphores_Increment( Semaphore sem )
+void Sem_Increment( Semaphore sem )
 {
   ReleaseSemaphore( sem->counter, 1, &(sem->count) );
   sem->count++;  
 }
 
-void Semaphores_Decrement( Semaphore sem )
+void Sem_Decrement( Semaphore sem )
 {
   WaitForSingleObject( sem->counter, INFINITE );
   sem->count--;
 }
 
-size_t Semaphores_GetCount( Semaphore sem )
+size_t Sem_GetCount( Semaphore sem )
 {
   if( sem == NULL ) return 0;
   
   return sem->count;
 }
 
-void Semaphores_SetCount( Semaphore sem, size_t count )
+void Sem_SetCount( Semaphore sem, size_t count )
 {
   if( sem == NULL ) return;
   
@@ -76,22 +76,19 @@ void Semaphores_SetCount( Semaphore sem, size_t count )
   if( count > sem->count )
   {
     for( size_t i = 0; i < countDelta; i++ )
-      Semaphores_Increment( sem );
+      Sem_Increment( sem );
   }  
   else if( count < sem->count )
   {
     for( size_t i = 0; i < countDelta; i++ )
-      Semaphores_Decrement( sem ); 
+      Sem_Decrement( sem ); 
   }
 }
 
 #else // Unix
 
 #include <semaphore.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <errno.h>
 #include <malloc.h>
 
 struct _SemaphoreData
@@ -101,9 +98,7 @@ struct _SemaphoreData
   size_t maxCount;
 };
 
-DEFINE_NAMESPACE_INTERFACE( Semaphores, SEMAPHORE_INTERFACE );
-
-Semaphore Semaphores_Create( size_t startCount, size_t maxCount )
+Semaphore Sem_Create( size_t startCount, size_t maxCount )
 {
   Semaphore sem = (Semaphore) malloc( sizeof(SemaphoreData) );
   sem_init( &(sem->upCounter), 0, maxCount - startCount );
@@ -114,26 +109,26 @@ Semaphore Semaphores_Create( size_t startCount, size_t maxCount )
   return sem;
 }
 
-void Semaphores_Discard( Semaphore sem )
+void Sem_Discard( Semaphore sem )
 {
   sem_destroy( &(sem->upCounter) );
   sem_destroy( &(sem->downCounter) );
   free( sem );
 }
 
-void Semaphores_Increment( Semaphore sem )
+void Sem_Increment( Semaphore sem )
 {
   sem_wait( &(sem->upCounter) );
   sem_post( &(sem->downCounter) );  
 }
 
-void Semaphores_Decrement( Semaphore sem )
+void Sem_Decrement( Semaphore sem )
 {
   sem_wait( &(sem->downCounter) );
   sem_post( &(sem->upCounter) ); 
 }
 
-size_t Semaphores_GetCount( Semaphore sem )
+size_t Sem_GetCount( Semaphore sem )
 {
   int countValue;
   sem_getvalue( &(sem->downCounter), &countValue );
@@ -141,21 +136,21 @@ size_t Semaphores_GetCount( Semaphore sem )
   return (size_t) countValue;
 }
 
-void Semaphores_SetCount( Semaphore sem, size_t count )
+void Sem_SetCount( Semaphore sem, size_t count )
 {
   if( count <= sem->maxCount )
   {
-    size_t currentCount = Semaphores_GetCount( sem );
+    size_t currentCount = Sem_GetCount( sem );
     
     if( currentCount > count )
     {
       for( size_t i = count; i < currentCount; i++ )
-        Semaphores_Decrement( sem );
+        Sem_Decrement( sem );
     }
     else if( currentCount < count )
     {
       for( size_t i = currentCount; i < count; i++ )
-        Semaphores_Increment( sem );
+        Sem_Increment( sem );
     }
   }
 }

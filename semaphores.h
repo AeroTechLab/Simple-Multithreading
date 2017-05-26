@@ -21,52 +21,47 @@
 
 
 /// @file semaphores.h
-/// @brief Platform agnostic multithreading functions.
+/// @brief Platform agnostic semaphore functions.
 ///
-/// Wrapper library for thread management (creation and syncronization)
+/// Wrapper library for thread synchronization (using semaphores)
 /// abstracting underlying low level operating system native calls                    
 
 #ifndef SEMAPHORES_H
 #define SEMAPHORES_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 typedef struct _SemaphoreData SemaphoreData;    ///< Data structure to hold single semaphore data
 typedef SemaphoreData* Semaphore;               ///< Opaque type to semaphore data structure
 
-
-/// @memberof Semaphores
-/// @fn Semaphore Create( size_t startCount, size_t maxCount )                                                                              
+                                                                            
 /// @brief Creates semaphore object/data structure and initializes it                                                
 /// @param[in] startCount starting value/count for newly created semaphore                                
 /// @param[in] maxCount maximum allowed value/count of newly created semaphore                                             
 /// @return reference to newly created semaphore data structure  
-///
-/// @memberof Semaphores
-/// @fn void Discard( Semaphore sem )
+Semaphore Sem_Create( size_t startCount, size_t maxCount );
+
 /// @brief Discards given semaphore data structure                            
 /// @param[in] sem reference to semaphore data structure
-///
-/// @memberof Semaphores
-/// @fn void Increment( Semaphore sem )
+void Sem_Discard( Semaphore sem );
+
 /// @brief Increases internal count for given semaphore, blocking thread if maximum count is reached                             
 /// @param[in] sem reference to semaphore data structure
-///
-/// @memberof Semaphores
-/// @fn void Decrement( Semaphore sem )
+void Sem_Increment( Semaphore sem );
+
 /// @brief Decreases internal count for given semaphore, blocking thread if zero count is reached                    
 /// @param[in] sem reference to semaphore data structure
-///
-/// @memberof Semaphores
-/// @fn size_t GetCount( Semaphore sem )
+void Sem_Decrement( Semaphore sem );
+
 /// @brief Reads current internal count for given semaphore                              
 /// @param[in] sem reference to semaphore data structure
 /// @return current internal count 
-///
-/// @memberof Semaphores
-/// @fn void SetCount( Semaphore sem, size_t count )
+size_t Sem_GetCount( Semaphore sem );
+
 /// @brief Defines desired internal count for given semaphore                              
 /// @param[in] sem reference to semaphore data structure
 /// @param[in] count desired internal count (should be between 0 and the maximum count) 
+void Sem_SetCount( Semaphore sem, size_t count );
 
 #endif // SEMAPHORES_H

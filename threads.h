@@ -30,6 +30,7 @@
 #define THREADS_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 #define THREAD_INVALID_HANDLE NULL            ///< Handle to be returned on thread creation errors
 #ifndef INFINITE
@@ -62,6 +63,6 @@ uint32_t Thread_WaitExit( Thread handle, unsigned int milliseconds );
 
 /// @brief Gets calling thread platform specific identifier                              
 /// @return calling thread platform specific identifier 
-unsigned long Thread_GetID()
+unsigned long Thread_GetID();
 
 #endif // THREADS_H

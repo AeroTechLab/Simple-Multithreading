@@ -20,9 +20,13 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-#include "threads.h"
+#include "thread_locks.h"
+#include "semaphores.h"
 
 #include "thread_safe_queues.h"
+
+#include <string.h>
+#include <stdlib.h>
 
 
 struct _TSQueueData

@@ -19,10 +19,12 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "threads.h"
+#include "thread_locks.h"
 
 #include "thread_safe_lists.h"
 
+#include <stdlib.h>
+#include <string.h>
 
 static const size_t LIST_LENGTH_INCREMENT = 10;
 
@@ -130,7 +132,7 @@ bool TSL_Remove( TSList list, int key )
   if( foundItem == NULL ) return false;
   
   free( foundItem->data );
-  foundItem->key = INFINITE;
+  foundItem->key = 0xFFFFFFFF;
   
   qsort( (void*) list->data, list->length, list->itemSize, ListCompare );
   

@@ -20,9 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-#include "klib/khash.h"
+#include "khash.h"
 
-#include "threads.h"
+#include "thread_locks.h"
 
 #include "thread_safe_maps.h"
 
