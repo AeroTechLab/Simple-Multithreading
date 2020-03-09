@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //                                                                                  //
-//  Copyright (c) 2016-2017 Leonardo Consoni <consoni_2519@hotmail.com>             //
+//  Copyright (c) 2016-2020 Leonardo Consoni <leonardojc@protonmail.com>            //
 //                                                                                  //
 //  This file is part of Simple Multithreading.                                     //
 //                                                                                  //
@@ -24,6 +24,9 @@
 #ifdef WIN32
 
 #include <Windows.h>
+
+#include <stdlib.h>  
+#include <stdio.h> 
 
 // Setup new thread to run the given method asynchronously
 Thread Thread_Start( AsyncFunction function, void* args, enum ThreadResourceMode mode )
