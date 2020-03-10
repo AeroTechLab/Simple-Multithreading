@@ -24,6 +24,7 @@
 #ifdef WIN32
 
 #include <Windows.h>
+#include <stdlib.h>
 
 struct _SemaphoreData
 {
